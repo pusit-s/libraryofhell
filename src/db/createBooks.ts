@@ -16,6 +16,8 @@ export async function createBooks() {
         { title: "The Adventures of Tom Sawyer", isbn: "9780486400778", category: "Adventure" },
         { title: "Murder on the Orient Express", isbn: "9780062693662", category: "Mystery" },
         { title: "The Old Man and the Sea", isbn: "9780684801223", category: "Classic" },
+        { title: "Harry Potter and the Chamber of Secrets", isbn: "9780439064873", category: "Fantasy" },
+        { title: "Harry Potter and the Prisoner of Azkaban", isbn: "9780439136365", category: "Fantasy" },
     ]
 
     for (const book of books) {
@@ -55,6 +57,8 @@ export async function createBooks() {
     addAuthorToBooks(responseBook[7].id, 8);
     addAuthorToBooks(responseBook[8].id, 9);
     addAuthorToBooks(responseBook[9].id, 10);
+    addAuthorToBooks(responseBook[10].id, 1);
+    addAuthorToBooks(responseBook[11].id, 1);
 
     console.log("✅ Books created!");
 }
