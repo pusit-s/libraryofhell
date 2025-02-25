@@ -12,4 +12,25 @@ router.get('/', async (req: Request, res: Response) => {
     }
 });
 
+// Get books from scheduled return date
+router.get("/scheduled-return", async (req: Request, res: Response) => {
+    try {
+        const dateString = req.query.date as string;
+        const date = new Date(dateString);
+
+        const books = await getScheduledReturnBooks(date); 
+        res.json(books);
+        
+    } catch (error) {
+        console.error("Error fetching scheduled return books:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// Get books that are not returned
+router.get('/not-returned', async (req: Request, res: Response) => {
+    const books = await getNotReturnedBooks();
+    res.json(books);
+});
+
 export default router;
