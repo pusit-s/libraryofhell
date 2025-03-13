@@ -79,3 +79,72 @@ export async function getScheduledReturnBooks(date: Date) {
         return [];
     }
 }
+
+export async function getBooksByKeywordWithPagination(keyword: string, page: number, pageSize: number) {
+    try {
+        const books = await prisma.book.findMany({
+            where: {
+                OR: [
+                    { title: { contains: keyword } },
+                    { category: { contains: keyword } },
+                    {
+                        author: {
+                            OR: [
+                                { name: { contains: keyword } },
+                                { surname: { contains: keyword } }
+                            ]
+                        }
+                    },
+                    {
+                        borrowRecords: {
+                            some: {
+                                transaction: {
+                                    member: {
+                                        OR: [
+                                            { name: { contains: keyword } },
+                                            { surname: { contains: keyword } }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            skip: (page - 1) * pageSize,
+            take: pageSize,
+            select: {
+                title: true,
+                isbn: true,
+                category: true,
+                author: {
+                    select: {
+                        name: true,
+                        surname: true
+                    }
+                },
+                borrowRecords: {
+                    select: {
+                        isReturned: true,
+                        transaction: {
+                            select: {
+                                borrowDate: true,
+                                member: {
+                                    select: {
+                                        name: true,
+                                        surname: true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        return books;
+    } catch (error) {
+        console.error("Error fetching books with pagination:", error);
+        return [];
+    }
+}

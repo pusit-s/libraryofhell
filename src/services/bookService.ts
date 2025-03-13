@@ -15,3 +15,7 @@ export function getNotReturnedBooks() {
 export function getScheduledReturnBooks(date: Date) {
     return repo.getScheduledReturnBooks(date);
 }
+
+export function getBooksByKeywordWithPagination(keyword: string, pageNo: number, pageSize: number) {
+    return repo.getBooksByKeywordWithPagination(keyword, pageNo, pageSize);
+}
